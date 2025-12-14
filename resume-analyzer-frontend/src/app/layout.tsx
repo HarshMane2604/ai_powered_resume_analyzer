@@ -6,6 +6,8 @@ import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import { usePathname } from "next/navigation";
+import { ThemeProvider } from "@/context/themeContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,7 +30,8 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      > 
+      <ThemeProvider>
         <BackgroundRippleEffect />
         {
           !hideNavbarPaths.includes(pathname) && (
@@ -37,7 +40,9 @@ export default function RootLayout({
             </div>
           )
         }
+        
         {children}
+      </ThemeProvider>
       </body>
     </html>
   );

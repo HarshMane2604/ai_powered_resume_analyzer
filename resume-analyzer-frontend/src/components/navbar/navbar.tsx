@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import Logo from "../logo";
+import { ThemeToggle } from "@/components/themeToggle";
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
@@ -19,6 +21,7 @@ export default function Navbar() {
           </div>
         </Link>
 
+
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8 text-gray-800 dark:text-white font-medium">
           <Link href="/" className="hover:text-blue-400 transition-colors">Home</Link>
@@ -29,10 +32,13 @@ export default function Navbar() {
           <button className="cursor-pointer text-white bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
             <Link href="/login" className=" transition-colors">Login</Link>
           </button>
+
+          <ThemeToggle />
+
         </div>
 
         {/* Mobile Toggle */}
-        <button 
+        <button
           className="md:hidden text-white"
           onClick={() => setOpen(!open)}
         >
@@ -45,7 +51,7 @@ export default function Navbar() {
         <div className="md:hidden bg-black/40 backdrop-blur-xl border-t border-white/20">
           <div className="flex flex-col text-white font-medium px-6 py-4 gap-4">
 
-            <Link 
+            <Link
               href="/"
               className="hover:text-blue-400 transition-colors"
               onClick={() => setOpen(false)}
@@ -53,7 +59,7 @@ export default function Navbar() {
               Home
             </Link>
 
-            <Link 
+            <Link
               href="/features"
               className="hover:text-blue-400 transition-colors"
               onClick={() => setOpen(false)}
@@ -61,7 +67,7 @@ export default function Navbar() {
               Features
             </Link>
 
-            <Link 
+            <Link
               href="/pricing"
               className="hover:text-blue-400 transition-colors"
               onClick={() => setOpen(false)}
@@ -69,7 +75,7 @@ export default function Navbar() {
               Pricing
             </Link>
 
-            <Link 
+            <Link
               href="/contact"
               className="hover:text-blue-400 transition-colors"
               onClick={() => setOpen(false)}
@@ -80,6 +86,11 @@ export default function Navbar() {
             <button className="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition-colors w-fit">
               Login
             </button>
+
+            <div className="py-2 w-fit">
+              <ThemeToggle />
+            </div>
+
           </div>
         </div>
       )}
