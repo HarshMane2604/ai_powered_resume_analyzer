@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
@@ -14,20 +13,22 @@ export default function Navbar() {
       <div className="flex items-center justify-between max-w-6xl mx-auto px-6 py-4">
 
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white">
-          <div className="flex items-center justify-center gap-3">
-            <Logo className="w-10 h-10" />
-            HireSight AI
-          </div>
-        </Link>
-
-
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 text-gray-800 dark:text-white font-medium">
+        <div className="flex items-center justify-center gap-8">
+          <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white">
+            <div className="flex items-center justify-center gap-3">
+              <Logo className="w-10 h-10" />
+              HireSight AI
+            </div>
+          </Link>
           <Link href="/" className="hover:text-blue-400 transition-colors">Home</Link>
           <Link href="/features" className="hover:text-blue-400 transition-colors">Features</Link>
           <Link href="/pricing" className="hover:text-blue-400 transition-colors">Pricing</Link>
           <Link href="/contact" className="hover:text-blue-400 transition-colors">Contact</Link>
+        </div>
+
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8 text-gray-800 dark:text-white font-medium">
+
 
           <button className="cursor-pointer text-white bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
             <Link href="/login" className=" transition-colors">Login</Link>

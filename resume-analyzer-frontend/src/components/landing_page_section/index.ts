@@ -5,6 +5,6 @@ import { LandingPlugin } from "./interface";
 
 export const LandingPlugins : LandingPlugin[] = [
     headerPlugin,
-    featurePlugin,
+    
     ctaSectionPlugin
 ]

@@ -30,12 +30,12 @@ function FeatureCard({icon, title, description, color}: FeatureCardProps) {
 }
 const FeatureSection = () => {
   return (
-    <div>
+    <div className='relative z-10 min-h-screen'>
         {/* Feature section */}
-      <section className='w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20 bg-linear-to-t from-white via-white to-purple-50 dark:from-black dark:via-gray-800 dark:to-gray-900 transition-colors'>
+      <section className='relative z-20  w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20 bg-linear-to-b from-transparent to-purple-50 dark:to-black'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12'>
-            <h2 className='text-gray-900 dark:text-white mb-4 text-xl sm:text-2xl md:text-3xl font-semibold'>Everything You Need to Stand Out</h2>
+            <h2 className='mt-4 text-gray-900 dark:text-white mb-4 text-xl sm:text-2xl md:text-3xl font-bold'>Everything You Need to Stand Out</h2>
             <p className='text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto'>Our AI-powered analyzer provides comprehensive insights to help you create a winning resume</p>
           </div>
 
