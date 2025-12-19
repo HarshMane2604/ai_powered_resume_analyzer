@@ -30,19 +30,19 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > 
-      <ThemeProvider>
-        <BackgroundRippleEffect />
-        {
-          !hideNavbarPaths.includes(pathname) && (
-            <div className="relative z-50">
-              <Navbar />
-            </div>
-          )
-        }
-        
-        {children}
-      </ThemeProvider>
+      >
+        <ThemeProvider>
+          <BackgroundRippleEffect />
+          {
+            !hideNavbarPaths.includes(pathname) && (
+              <div className="relative z-50">
+                <Navbar />
+              </div>
+            )
+          }
+
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
