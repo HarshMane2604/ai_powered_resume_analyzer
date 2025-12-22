@@ -2,7 +2,7 @@ import React from 'react'
 import { CheckCircle } from 'lucide-react'; 
 const PricingSection = () => {
   return (
-    <section id="pricing" className="relative z-10 min-h-screen mt-5 container mx-auto px-4 py-20 ">
+    <section id="pricing" className="relative z-10 mt-15 container mx-auto px-4 py-20 ">
         <div className="text-center mb-12">
           <h2 className="text-gray-900 dark:text-white mb-4">
             Simple, Transparent Pricing
