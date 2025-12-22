@@ -37,7 +37,7 @@ export function Analyzer({
       if (
         file.type === "application/pdf" ||
         file.type ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         file.type === "text/plain"
       ) {
         setSelectedFile(file);
@@ -60,15 +60,14 @@ export function Analyzer({
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-700 transition-colors">
+    <div className="relative z-10 max-w-2xl mx-auto min-h-screen flex items-center justify-center">
+      <div className="w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-900 transition-colors">
         {/* Upload Area */}
         <div
-          className={`border-2 border-dashed rounded-xl p-12 text-center transition-all ${
-            dragActive
+          className={`border-2 border-dashed rounded-xl text-center transition-all ${dragActive
               ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-              : "border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-          }`}
+              : "border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/20"
+            }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
@@ -86,28 +85,33 @@ export function Analyzer({
 
           {!selectedFile ? (
             <>
-              <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center">
+
+              <div className="flex items-center justify-center py-4 px-4 gap-4">
                 <Upload className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <div className="flex flex-col items-start justify-start">
+                  <p className="text-gray-700 dark:text-gray-200 mb-1">
+                    Drag and drop your resume here, or click to browse
+                  </p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs">
+                    (PDF, DOC, DOCX, TXT formats supported)
+                  </p>
+                </div>
               </div>
-              <p className="text-gray-700 dark:text-gray-200 mb-2">
-                Drag and drop your resume here, or click to
-                browse
-              </p>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">
-                Supports PDF, DOCX, and TXT files
-              </p>
+
             </>
           ) : (
             <>
-              <div className="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center">
+              <div className="flex items-center justify-center py-4 px-4 gap-4">
                 <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
+                <div className="flex flex-col items-start justify-start">
+                  <p className="text-gray-700 dark:text-gray-200 mb-1">
+                    {selectedFile.name}
+                  </p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">
+                    {(selectedFile.size / 1024).toFixed(2)} KB
+                  </p>
+                </div>
               </div>
-              <p className="text-gray-700 dark:text-gray-200 mb-1">
-                {selectedFile.name}
-              </p>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">
-                {(selectedFile.size / 1024).toFixed(2)} KB
-              </p>
             </>
           )}
         </div>

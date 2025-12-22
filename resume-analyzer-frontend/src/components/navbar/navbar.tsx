@@ -9,7 +9,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 dark:bg-transparent">
+    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl ">
       <div className="flex items-center justify-between max-w-6xl mx-auto px-6 py-4">
 
         {/* Logo */}
@@ -23,7 +23,6 @@ export default function Navbar() {
           <Link href="/" className="hover:text-blue-400 transition-colors">Home</Link>
           <Link href="/features" className="hover:text-blue-400 transition-colors">Features</Link>
           <Link href="/pricing" className="hover:text-blue-400 transition-colors">Pricing</Link>
-          <Link href="/contact" className="hover:text-blue-400 transition-colors">Contact</Link>
         </div>
 
         {/* Desktop Links */}

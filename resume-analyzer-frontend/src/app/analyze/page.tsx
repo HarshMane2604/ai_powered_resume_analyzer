@@ -4,7 +4,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className='z-100'><Analyzer onAnalyze={() => {}} isAnalyzing={false} /></div>
+    <div className=' min-h-screen'><Analyzer onAnalyze={() => {}} isAnalyzing={false} /></div>
   )
 }
 
