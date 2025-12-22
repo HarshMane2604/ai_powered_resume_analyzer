@@ -1,20 +1,24 @@
 'use client';
 import { useState, useRef } from "react";
 import { Upload, FileText, Loader2 } from "lucide-react";
+import { analyzeResume } from "@/lib/api";
 
 interface ResumeUploadProps {
-  onAnalyze: (file: File) => void;
-  isAnalyzing: boolean;
+  onAnalyze?: (file: File) => void;
+  isAnalyzing?: boolean;
 }
 
 export function Analyzer({
   onAnalyze,
-  isAnalyzing,
+  isAnalyzing: isAnalyzingProp,
 }: ResumeUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(
     null,
   );
   const [dragActive, setDragActive] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (e: React.DragEvent) => {
@@ -53,9 +57,20 @@ export function Analyzer({
     }
   };
 
-  const handleAnalyzeClick = () => {
+  const handleAnalyzeClick = async () => {
     if (selectedFile) {
-      onAnalyze(selectedFile);
+      setIsAnalyzing(true);
+      setError(null);
+      try {
+        const result = await analyzeResume(selectedFile);
+        setAnalysisResult(result);
+        onAnalyze?.(selectedFile);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to analyze resume');
+        console.error('Analysis error:', err);
+      } finally {
+        setIsAnalyzing(false);
+      }
     }
   };
 
@@ -140,6 +155,25 @@ export function Analyzer({
             >
               Clear
             </button>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+          </div>
+        )}
+
+        {/* Analysis Result */}
+        {analysisResult && (
+          <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+            <p className="text-green-600 dark:text-green-400 text-sm font-semibold mb-2">
+              Analysis Complete!
+            </p>
+            <pre className="text-xs text-gray-700 dark:text-gray-300 overflow-auto max-h-40">
+              {JSON.stringify(analysisResult, null, 2)}
+            </pre>
           </div>
         )}
 
