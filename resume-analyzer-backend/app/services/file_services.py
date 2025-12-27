@@ -23,7 +23,7 @@ def save_temp_file(file: UploadFile) -> Path:
     temp_path = TEMP_DIR / f"{uuid.uuid4()}{suffix}"
 
     with open(temp_path, 'wb') as f:
-        while chunk := file.file.read(1024 / 1024):
+        while chunk := file.file.read(1024 * 1024):
             f.write(chunk)
     file.file.seek(0)
     return temp_path

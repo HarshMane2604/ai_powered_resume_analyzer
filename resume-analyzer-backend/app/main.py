@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import routes.resume as resume
+from app.routes import resume
 
 app = FastAPI(title="AI Resume Analyzer API")
 
