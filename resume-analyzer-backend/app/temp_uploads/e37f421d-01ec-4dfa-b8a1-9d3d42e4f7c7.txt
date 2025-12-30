@@ -1,0 +1,56 @@
+Harsh Mane
+maneharsh72@gmail.com
+ 
+9049228342
+ 
+Solapur
+ 
+Portfolio
+ 
+Linkedin
+ 
+Github
+ 
+Profile
+I am a Developer who also builds AI-powered automation tools. With experience in React, Next.js, Python, and web scraping, I create clean, scalable web interfaces and engineer intelligent automation systems that speed up development, improve workflow efficiency, and solve real-world problems.
+
+Skills
+Technical Skills — Tailwind CSS, JavaScript, React.js, Next.js, Python, Web Scraping, MySQL, MongoDB
+Professional Experience
+Frontend Developer Intern, Earth Solution Pvt. Ltd
+03/2025 – Present
+ | 
+Pune
+•Faced the challenge of building a user-friendly interface for a React.js SaaS application; solved it by developing and maintaining a responsive frontend that improved usability and accessibility.
+•Needed a way for users to schedule meetings and manage workspaces easily; addressed this by creating workspace modules and meeting scheduling features, integrating seamlessly with Google Calendar APIs.
+•Users struggled to quickly access meeting insights; fixed this by implementing an interactive chatbot with knowledge chips, allowing faster and more efficient interaction.
+•Code duplication and poor scalability were bottlenecks; resolved them by designing and optimizing reusable React components, ensuring long-term maintainability.
+•The application had performance lags due to inefficient rendering; overcame this by applying React hooks, state management, and optimization techniques, which significantly enhanced UI performance.
+Projects
+AUTONOMOUS DEVELOPER AGENT (AI-POWERED CODE ASSISTANT)
+Tech Stack: Python, LangChain/LangGraph, OpenAI API, GitHub API, Shell Tools
+
+• Built an AI agent that understands entire codebases and assists developers by fixing bugs, improving logic, and generating documentation automatically.
+
+• Replaced manual switching between terminal, editor, and docs with a natural-language interface that reads files, applies changes, and runs commands on its own.
+
+• Solved code consistency and quality issues by enabling the agent to refactor code and generate clean, structured Git commits through GitHub API integration.
+
+• Streamlined the development workflow by automating repetitive tasks, reducing manual effort, and making everyday programming faster and more reliable.
+
+Project: Amazon Product Scraper
+Tech Stack: Python, BeautifulSoup, Requests, Fake-UserAgent, Proxy Server
+
+•Many people struggle to gather product data from e-commerce sites efficiently. I solved this by building a Python-based scraper that extracts product titles, prices, and ratings in real time.
+•Unlike manual data collection, this tool uses proxies and user-agent rotation to bypass restrictions and ensure consistent scraping.
+•To keep it simple yet powerful, I designed it to run from the command line with clean, structured output—perfect for quick market analysis and automation.
+Education
+Walchand Institute of Technology, Solapur, Bachelor of Technology, Electronics and Telecommunication | GPA: 80.49%
+08/2021 – 06/2025
+ | 
+Solapur, India
+Sangmeshwar College of Arts and Science, 
+High School Certificate | GPA: 92.00%
+08/2019 – 03/2021
+ | 
+Solapur, India

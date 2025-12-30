@@ -25,10 +25,12 @@ def analyze_resume_with_ai(resume_text:str) -> dict:
         Schema:
         {{
         "ats_score": number,
+        "overall_score": number,
         "skills": string[],
         "strengths": string[],
         "weaknesses": string[],
-        "suggestions": string[]
+        "suggestions": string[],
+        "recommended_skills": string[]
         }}
 
         Resume:

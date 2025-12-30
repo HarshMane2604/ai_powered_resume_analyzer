@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.8",
+    "@reduxjs/toolkit": "^2.11.2",
     "@tabler/icons-react": "^3.35.0",
     "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
@@ -19,6 +20,7 @@
     "next": "16.0.8",
     "react": "19.2.1",
     "react-dom": "19.2.1",
+    "react-redux": "^9.2.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
