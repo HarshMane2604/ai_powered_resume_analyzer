@@ -2,12 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ResumeAnalysis{
     ats_score: number;
-    overall_score?: number;
+    overall_score: number;
     skills: string[];
     strengths: string[];
     weaknesses: string[];
     suggestions: string[];
     recommended_skills?: string[];
+    section_scores: {
+        [key: string]: number;
+    };
 }
 
 interface ApiResponse {

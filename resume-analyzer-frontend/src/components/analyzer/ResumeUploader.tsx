@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { Upload, FileText, Loader2 } from "lucide-react";
 import { analyzeResume } from "@/lib/api";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import { analysisSuccess, analysisFailure, startAnalysis } from "@/redux/sclices/resumeSlice";
 

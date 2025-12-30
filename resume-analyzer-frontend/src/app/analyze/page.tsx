@@ -1,13 +1,11 @@
 'use client';
-import ResumeUploader from '@/components/analyzer/ResumeUploader';
-import { AnalyzerResult } from '@/components/analyzer/AnalyzerResult';
 import React from 'react';
+import { ResumePage } from '@/components/analyzer/ResumePage';
 
 const page = () => {
   return (
-    <div className='min-h-screen'>
-      <ResumeUploader onAnalyze={() => {}} isAnalyzing={false} />
-      <AnalyzerResult />
+    <div className='min-h-screen relative z-10'>
+      <ResumePage />
     </div>
   );
 };

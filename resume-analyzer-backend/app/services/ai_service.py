@@ -30,9 +30,14 @@ def analyze_resume_with_ai(resume_text:str) -> dict:
         "strengths": string[],
         "weaknesses": string[],
         "suggestions": string[],
-        "recommended_skills": string[]
+        "recommended_skills": string[],
+        "section_scores": {{
+            "Content": number,
+            "Formatting": number,
+            "keywords": number,
+            "work_experience": number,
         }}
-
+        }}
         Resume:
         {resume_text}
     """
