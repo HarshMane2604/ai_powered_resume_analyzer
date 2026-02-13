@@ -27,6 +27,7 @@ async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     new_user = User(
         name=user_data.name,
         email=user_data.email,
+        role=user_data.role,
         password_hash=hashed
     )
 
@@ -70,3 +71,9 @@ async def login(user_data: UserLogin, response: Response, db: AsyncSession = Dep
     )
 
     return {"message": "Login successful"}
+
+@router.post('/logout')
+async def logout(response: Response):
+    response.delete_cookie(key="access_token")
+    response.delete_cookie(key="refresh_token")
+    return {"message": "Logged out successfully"}

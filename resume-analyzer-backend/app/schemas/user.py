@@ -4,7 +4,7 @@ class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=72)
-
+    role: str = Field(default="user")
     @field_validator("password")
     @classmethod
     def password_bytes_limit(cls, v: str):

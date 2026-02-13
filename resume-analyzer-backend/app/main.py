@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import resume, auth
+from app.routes import resume, auth, protected
 from app.core.database import engine, Base
 app = FastAPI(title="AI Resume Analyzer API")
 
@@ -15,6 +15,7 @@ app.add_middleware(
 
 app.include_router(resume.router, prefix="/resume", tags=["resumes"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(protected.router, tags=["protected"])
 
 @app.get("/")
 def health_check():
