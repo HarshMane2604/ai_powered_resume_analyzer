@@ -1,7 +1,7 @@
+import os, secrets
 from passlib.context import CryptContext
 from jose import jwt
-from datetime import datetime, timedelta
-import os
+from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from dotenv import load_dotenv
 load_dotenv()
@@ -35,6 +35,12 @@ def create_refresh_token(data: dict):
     expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def generate_reset_token():
+    return secrets.token_urlsafe(32)
+
+def generate_reset_token_expiry():
+    return datetime.now(timezone.utc) + timedelta(hours=1)
 
 def verify_token(token: str):
     try:

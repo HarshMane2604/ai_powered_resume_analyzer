@@ -4,7 +4,9 @@ from sqlalchemy.future import select
 from app.core.database import get_db
 from app.models.user import User
 from app.schemas.user import UserCreate, UserLogin
-from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token
+from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token, generate_reset_token, generate_reset_token_expiry
+from app.core.security import hash_password
+from datetime import datetime, timezone
 
 router = APIRouter()
 
@@ -77,3 +79,36 @@ async def logout(response: Response):
     response.delete_cookie(key="access_token")
     response.delete_cookie(key="refresh_token")
     return {"message": "Logged out successfully"}
+
+@router.post('/forgot-password')
+async def forget_password(email: str, db:AsyncSession = Depends(get_db)):
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalars().first()
+
+    if user:
+        user.reset_token = generate_reset_token()
+        user.reset_token_expiry = generate_reset_token_expiry()
+        await db.commit()
+        # Here you would send the reset token to the user's email in a real application
+        print(f"Reset link: http://localhost:3000/reset-password?token={user.reset_token}")
+
+    # Always return same message
+    return {"message": "If this email exists, a reset link has been sent."}
+
+@router.post('/reset-password')
+async def reset_password(token: str, new_password: str, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(User).where(User.reset_token == token))
+    user = result.scalars().first()
+
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid or expired token")
+    
+    if not user.reset_token_expiry or user.reset_token_expiry < datetime.now(timezone.utc):
+        raise HTTPException(status_code=400, detail="Token expired")
+
+    user.password_hash = hash_password(new_password)
+    user.reset_token = None
+    user.reset_token_expiry = None
+    await db.commit()
+
+    return {"message": "Password reset successful"}
