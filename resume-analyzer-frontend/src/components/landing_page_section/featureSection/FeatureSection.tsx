@@ -1,86 +1,99 @@
-import React from 'react'
-import { FileText, CheckCircle, Zap, Target, ArrowRight, Star } from 'lucide-react';
-
+'use client';
+import React from 'react';
+import { FileText, CheckCircle, Zap, Target, Star, Layers } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  color: 'blue' | 'purple' | 'green' | 'orange' | 'pink' | 'indigo';
+  index: number;
 }
 
-function FeatureCard({ icon, title, description, color }: FeatureCardProps) {
-  const colorMap = {
-    blue: 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400',
-    purple: 'bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400',
-    green: 'bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400',
-    orange: 'bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400',
-    pink: 'bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400',
-    indigo: 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400',
-  }
+const FeatureCard = ({ icon, title, description, index }: FeatureCardProps) => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-lg dark:hover:shadow-gray-700 transition-shadow duration-300 cursor-pointer">
-      <div className={`w-12 h-12 rounded-lg ${colorMap[color]} flex items-center justify-center mb-4`}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      className="group relative bg-white dark:bg-[#0a0a0a] rounded-2xl p-8 border border-gray-200 dark:border-gray-800 hover:shadow-xl dark:hover:shadow-2xl dark:hover:shadow-black/50 transition-all duration-300 hover:-translate-y-1"
+    >
+      <div className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex items-center justify-center mb-6 text-gray-700 dark:text-gray-300 group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-transform duration-300">
         {icon}
       </div>
-      <h3 className="text-gray-900 dark:text-white mb-2">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400 text-sm">{description}</p>
-    </div>
-  )
-}
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{title}</h3>
+      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
+    </motion.div>
+  );
+};
+
 const FeatureSection = () => {
   return (
-    <div className='relative z-10'>
-      {/* Feature section */}
-      <section className='relative z-20  w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20 bg-linear-to-b from-purple-50 to-white dark:from-gray-900 dark:to-black'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-12'>
-            <h2 className='mt-4 text-gray-900 dark:text-white mb-4 text-xl sm:text-2xl md:text-3xl font-bold'>Everything You Need to Stand Out</h2>
-            <p className='text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto'>Our AI-powered analyzer provides comprehensive insights to help you create a winning resume</p>
-          </div>
-
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8'>
-            <FeatureCard
-              icon={<Target className="w-6 h-6" />}
-              title="ATS Optimization"
-              description="Ensure your resume passes Applicant Tracking Systems with our advanced compatibility scoring"
-              color="blue"
-            />
-            <FeatureCard
-              icon={<Zap className="w-6 h-6" />}
-              title="Instant Analysis"
-              description="Get comprehensive feedback in seconds, not hours. No waiting, no hassle"
-              color="purple"
-            />
-            <FeatureCard
-              icon={<CheckCircle className="w-6 h-6" />}
-              title="Keyword Detection"
-              description="Discover important keywords you're missing and skills you should highlight"
-              color="green"
-            />
-            <FeatureCard
-              icon={<FileText className="w-6 h-6" />}
-              title="Section Breakdown"
-              description="Get detailed scores for every section of your resume to identify weak spots"
-              color="orange"
-            />
-            <FeatureCard
-              icon={<Star className="w-6 h-6" />}
-              title="Smart Suggestions"
-              description="Receive actionable recommendations to improve your resume's impact"
-              color="pink"
-            />
-            <FeatureCard
-              icon={<CheckCircle className="w-6 h-6" />}
-              title="Multiple Formats"
-              description="Support for PDF, DOCX, and TXT file formats for maximum flexibility"
-              color="indigo"
-            />
-          </div>
+    <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 py-24 bg-gray-50/50 dark:bg-[#050505]">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16 md:mb-24">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6"
+          >
+            Everything You Need to Stand Out
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
+          >
+            Our enterprise-grade AI provides comprehensive insights to help you craft a winning resume tailored for modern Applicant Tracking Systems.
+          </motion.p>
         </div>
-      </section>
-    </div>
-  )
-}
 
-export default FeatureSection
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <FeatureCard
+            index={0}
+            icon={<Target className="w-6 h-6" />}
+            title="ATS Optimization"
+            description="Ensure your resume passes Applicant Tracking Systems with our advanced compatibility scoring and formatting checks."
+          />
+          <FeatureCard
+            index={1}
+            icon={<Zap className="w-6 h-6" />}
+            title="Instant Analysis"
+            description="Get comprehensive feedback in seconds. Our AI evaluates your entire profile instantly, saving you valuable time."
+          />
+          <FeatureCard
+            index={2}
+            icon={<CheckCircle className="w-6 h-6" />}
+            title="Keyword Detection"
+            description="Discover crucial industry keywords you're missing. Align your skills precisely with the job description."
+          />
+          <FeatureCard
+            index={3}
+            icon={<FileText className="w-6 h-6" />}
+            title="Section Breakdown"
+            description="Receive detailed scores for every section of your resume to identify weak spots and areas for immediate improvement."
+          />
+          <FeatureCard
+            index={4}
+            icon={<Star className="w-6 h-6" />}
+            title="Smart Suggestions"
+            description="Get actionable, AI-generated recommendations to enhance your impact and phrasing."
+          />
+          <FeatureCard
+            index={5}
+            icon={<Layers className="w-6 h-6" />}
+            title="Multiple Formats"
+            description="Seamless support for PDF, DOCX, and TXT files, ensuring maximum flexibility and compatibility."
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default FeatureSection;
