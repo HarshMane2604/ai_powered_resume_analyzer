@@ -41,3 +41,6 @@ Thumbs.db
 
 # Log files
 *.log
+
+# folder for uploaded resumes
+/temp_uploads
