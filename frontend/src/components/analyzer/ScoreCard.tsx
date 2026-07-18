@@ -19,19 +19,15 @@ export const ScoreCard = ({ title, score, color, description }: ScoreCardProps) 
     const scoreLabel = getScoreLabel(score);
 
     return (
-        <div className="bg-white dark:bg-[#09090b] rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-800">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-6">{title}</h3>
-            <div className="flex items-center gap-6">
-                <div>
-                    <CircularProgress score={score} color={color} />
-                </div>
-                <div className="flex-1">
-                    <div className={`text-xl font-bold mb-1 ${scoreLabel.color}`}>
-                        {scoreLabel.text}
-                    </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 leading-snug">{description}</p>
-                </div>
+        <div className="bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 h-full flex flex-col items-center justify-center text-center transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 hover:-translate-y-1">
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-500 uppercase tracking-widest mb-4">{title}</p>
+            <div className="mb-4">
+                <CircularProgress score={score} color={color} />
             </div>
+            <div className={`text-lg font-bold mb-0.5 ${scoreLabel.color}`}>
+                {scoreLabel.text}
+            </div>
+            <p className="text-[11px] text-gray-400 dark:text-gray-500 leading-relaxed">{description}</p>
         </div>
     )
 }

@@ -8,9 +8,9 @@ interface SkillSectionProps {
 
 export const SkillSection = ({detectedSkills, missingKeywords}:SkillSectionProps) => {
   return (
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="grid md:grid-cols-2 gap-6 h-full">
         {/* Detected Skills */}
-        <div className='bg-white dark:bg-[#09090b] rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-800'>
+        <div className='bg-white dark:bg-[#09090b] rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-800 h-full'>
             <div className="flex items-center gap-2 mb-6">
                 <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-500"/>
                 <h3 className='text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider'>Detected Skills</h3>
@@ -28,7 +28,7 @@ export const SkillSection = ({detectedSkills, missingKeywords}:SkillSectionProps
         </div>
 
         {/* Missing Keywords */}
-        <div className='bg-white dark:bg-[#09090b] rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-800'>
+        <div className='bg-white dark:bg-[#09090b] rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-800 h-full'>
             <div className="flex items-center gap-2 mb-6">
                 <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-500"/>
                 <h3 className='text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider'>Recommended Keywords</h3>
