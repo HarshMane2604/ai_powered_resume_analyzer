@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from "react";
-import { Upload, FileText, Loader2 } from "lucide-react";
+import { Upload, FileText, Loader2, Sparkles, CheckCircle2, Target, Zap } from "lucide-react";
 import { analyzeResume } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
@@ -77,14 +77,26 @@ export function ResumeUploader({
    console.log('Resume data from Redux:', resumeData);
 
   return (
-    <div className="relative z-10 max-w-2xl mx-auto min-h-screen flex items-center justify-center">
-      <div className="w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-900 transition-colors">
+    <div className="w-full max-w-4xl mx-auto pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+      
+      {/* Header Section */}
+      <div className="text-center mb-12">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">
+          Analyze Your Resume
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          Upload your resume to get instant, actionable feedback powered by advanced AI. Ensure you match industry standards and land more interviews.
+        </p>
+      </div>
+
+      <div className="bg-white dark:bg-[#09090b] rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 sm:p-10">
+        
         {/* Upload Area */}
         <div
-          className={`border-2 border-dashed rounded-xl text-center transition-all ${
+          className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer ${
             dragActive
-              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-              : "border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/20"
+              ? "border-blue-500 bg-blue-50 dark:bg-blue-500/10"
+              : "border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-900/50"
           }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -101,104 +113,125 @@ export function ResumeUploader({
             disabled={loading}
           />
 
-          {!selectedFile ? (
-            <>
-              <div className="flex items-center justify-center py-4 px-4 gap-4">
-                <Upload className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                <div className="flex flex-col items-start justify-start">
-                  <p className="text-gray-700 dark:text-gray-200 mb-1">
-                    Drag and drop your resume here, or click to browse
+          <div className="flex flex-col items-center justify-center gap-4">
+            {!selectedFile ? (
+              <>
+                <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-full">
+                  <Upload className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    Click to upload or drag and drop
                   </p>
-                  <p className="text-gray-500 dark:text-gray-400 text-xs">
-                    (PDF, DOC, DOCX, TXT formats supported)
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                    PDF, DOC, DOCX up to 5MB
                   </p>
                 </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="flex items-center justify-center py-4 px-4 gap-4">
-                <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
-                <div className="flex flex-col items-start justify-start">
-                  <p className="text-gray-700 dark:text-gray-200 mb-1">
+              </>
+            ) : (
+              <>
+                <div className="p-4 bg-emerald-50 dark:bg-emerald-500/10 rounded-full">
+                  <FileText className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {selectedFile.name}
                   </p>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">
-                    {(selectedFile.size / 1024).toFixed(2)} KB
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2 font-medium">
+                    Ready to analyze • {(selectedFile.size / 1024).toFixed(2)} KB
                   </p>
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
 
         {/* Analyze Button */}
         {selectedFile && (
-          <div className="mt-6 flex gap-3">
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleAnalyzeClick}
               disabled={loading}
-              className="flex-1 bg-blue-600 dark:bg-blue-500 text-white px-6 py-3 rounded-xl hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold px-6 py-3 rounded-lg shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
             >
-              {loading   ? (
+              {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Analyzing Resume...
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Analyzing...
                 </>
               ) : (
-                <>Analyze Resume</>
+                <>
+                  <Sparkles className="w-4 h-4" />
+                  Analyze Resume
+                </>
               )}
             </button>
             <button
               onClick={() => setSelectedFile(null)}
               disabled={loading}
-              className="px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors disabled:opacity-50"
+              className="px-6 py-3 rounded-lg font-medium border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 text-sm"
             >
-              Clear
+              Cancel
             </button>
           </div>
         )}
 
         {/* Error Message */}
         {error && (
-          <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+          <div className="mt-6 p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-lg flex items-start gap-3">
+            <div className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+            <p className="text-red-800 dark:text-red-400 font-medium text-sm">{error}</p>
           </div>
         )}
 
+        {/* Features Grid */}
+        <div className="mt-12">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-6 uppercase tracking-wider">
+            What you'll receive
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            <div className="flex gap-4">
+              <div className="shrink-0 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-md">
+                <Target className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">ATS Match Score</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">See how well your resume parses in standard Applicant Tracking Systems.</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-4">
+              <div className="shrink-0 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-md">
+                <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Keyword Analysis</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Identify critical industry keywords you might be missing.</p>
+              </div>
+            </div>
 
-        {/* Features */}
-        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-            What you'll get:
-          </p>
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full mt-1.5"></div>
-              <span className="text-gray-600 dark:text-gray-300">
-                ATS Compatibility Score
-              </span>
+            <div className="flex gap-4">
+              <div className="shrink-0 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-md">
+                <Zap className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Strengths & Weaknesses</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Detailed breakdown of what makes you stand out to recruiters.</p>
+              </div>
             </div>
-            <div className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full mt-1.5"></div>
-              <span className="text-gray-600 dark:text-gray-300">
-                Keyword Analysis
-              </span>
-            </div>
-            <div className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full mt-1.5"></div>
-              <span className="text-gray-600 dark:text-gray-300">
-                Strengths & Weaknesses
-              </span>
-            </div>
-            <div className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full mt-1.5"></div>
-              <span className="text-gray-600 dark:text-gray-300">
-                Improvement Suggestions
-              </span>
+
+            <div className="flex gap-4">
+              <div className="shrink-0 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-md">
+                <Sparkles className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Actionable Suggestions</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Direct advice and examples on how to improve your bullet points.</p>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

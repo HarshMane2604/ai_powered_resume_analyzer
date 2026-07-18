@@ -34,17 +34,16 @@ export const FeedBackSection = ({
   const styles = colorMap[color];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-      <div className="flex items-center gap-2 mb-4">
+    <div className="bg-white dark:bg-[#09090b] rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-800 h-full">
+      <div className="flex items-center gap-2 mb-6">
         <span className={styles.icon}>{icon}</span>
-        <h3 className="text-gray-900 dark:text-white">{title}</h3>
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">{title}</h3>
       </div>
-
-      <ul className="space-y-3">
+      <ul className="space-y-4">
         {items.map((item, index) => (
           <li
             key={index}
-            className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm"
+            className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
           >
             <div
               className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${styles.dot}`}
