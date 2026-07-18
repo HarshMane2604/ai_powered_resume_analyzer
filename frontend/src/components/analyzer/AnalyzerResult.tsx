@@ -23,7 +23,6 @@ export const AnalyzerResult = () => {
     <div className="w-full max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8">
       {/* ===== BENTO GRID ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[minmax(180px,auto)]">
-
         {/* ── Hero Tile (wide, row 1, col 1-2) ── */}
         <div className="md:col-span-2 lg:col-span-2 lg:row-span-1 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-900 rounded-2xl p-8 flex flex-col justify-center text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1">
           <div className="flex items-center gap-3 mb-3">
@@ -36,7 +35,8 @@ export const AnalyzerResult = () => {
             Resume Report
           </h1>
           <p className="text-blue-100 text-sm leading-relaxed max-w-md">
-            Your resume has been analyzed against industry standards for content, formatting, keyword optimization and ATS compatibility.
+            Your resume has been analyzed against industry standards for
+            content, formatting, keyword optimization and ATS compatibility.
           </p>
         </div>
 
@@ -138,7 +138,7 @@ export const AnalyzerResult = () => {
                 >
                   {keyword}
                 </span>
-              )
+              ),
             )}
           </div>
         </div>
