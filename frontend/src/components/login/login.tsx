@@ -1,5 +1,7 @@
 "use client";
-import React, { useState, useSyncExternalStore } from "react";
+import React, { useState } from "react";
+import { useAuth } from "@/context/authContext";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
@@ -21,6 +23,9 @@ export function SignupFormDemo() {
   const [isLogin, setIsLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { refreshAuth } = useAuth();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -42,6 +47,7 @@ export function SignupFormDemo() {
 
       const response = await fetch(endpoint, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -60,9 +66,12 @@ export function SignupFormDemo() {
                 ? "Login successful!"
                 : "Sign up successful!",
         );
-        if (!isLogin) {
+        if (isLogin) {
+          await refreshAuth();
           // Switch to login mode after successful signup
-          setTimeout(() => setIsLogin(true), 1500);
+          const redirectUrl = searchParams.get("redirect") || "/";
+          // Small delay so user can see the success message
+          setTimeout(() => router.push(redirectUrl), 1000);
         }
       } else {
         if (Array.isArray(data.detail)) {

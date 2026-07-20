@@ -1,9 +1,9 @@
-'use client';
+"use client";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar/navbar";
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import React from "react";
-
+import { AuthProvider } from "@/context/authContext";
 export default function RootLayoutClient({
   children,
 }: {
@@ -14,13 +14,15 @@ export default function RootLayoutClient({
 
   return (
     <>
-      <BackgroundRippleEffect />
-      {!hideNavbarPaths.includes(pathname) && (
-        <div className="relative z-50">
-          <Navbar />
-        </div>
-      )}
-      {children}
+      <AuthProvider>
+        <BackgroundRippleEffect />
+        {!hideNavbarPaths.includes(pathname) && (
+          <div className="relative z-50">
+            <Navbar />
+          </div>
+        )}
+        {children}
+      </AuthProvider>
     </>
   );
 }

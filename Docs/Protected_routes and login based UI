@@ -1,0 +1,314 @@
+# 🔒 Adding Auth Protection & Conditional Navbar — DIY Guide
+
+Follow these steps one by one. Each step tells you **what file to edit**, **what to add**, and **why it works**.
+
+---
+
+## The Big Picture
+
+```mermaid
+flowchart TD
+    A[User visits /analyze] --> B{Is authenticated?}
+    B -->|Yes| C[Show Resume Analyzer]
+    B -->|No| D[Redirect to /login]
+    
+    E[Navbar renders] --> F{Is authenticated?}
+    F -->|Yes| G[Show Profile Avatar + Name]
+    F -->|No| H[Show Login Button]
+```
+
+You'll edit **3 files**:
+
+| # | File | What to add |
+|---|------|-------------|
+| 1 | [authContext.tsx](file:///e:/Web%20Development/ai_powered_resume_analyzer/frontend/src/context/authContext.tsx) | Create a `useAuth()` hook so other components can read auth state |
+| 2 | [analyze/page.tsx](file:///e:/Web%20Development/ai_powered_resume_analyzer/frontend/src/app/analyze/page.tsx) | Add a route guard that redirects unauthenticated users |
+| 3 | [navbar.tsx](file:///e:/Web%20Development/ai_powered_resume_analyzer/frontend/src/components/navbar/navbar.tsx) | Show profile when logged in, login button when not |
+
+> [!NOTE]
+> You already completed two prerequisite steps:
+> - ✅ Removed `router.push("/auth/login")` from `authContext.tsx` (context should only store state, not redirect)
+> - ✅ Wrapped app with `<AuthProvider>` in `rootLayoutClient.tsx`
+
+---
+
+## Step 1: Create the `useAuth()` Hook
+
+### 📁 File: [authContext.tsx](file:///e:/Web%20Development/ai_powered_resume_analyzer/frontend/src/context/authContext.tsx)
+
+### Why you need this
+
+Your `AuthContext` is created on line 22 but it's a **private variable** — other components can't access it directly. You need a hook that calls `useContext(AuthContext)` and returns the auth data.
+
+### What to do
+
+**1a.** Add `useContext` to your React imports on line 3:
+
+```
+Before: import { createContext, useEffect, useState, ReactNode } from "react";
+After:  import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+                              ^^^^^^^^^^
+                              add this
+```
+
+**1b.** At the **very bottom** of the file (after the `AuthProvider` function's closing `}`), add a new exported function:
+
+```tsx
+// Custom hook to use auth context
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
+```
+
+### How it works
+
+- `useContext(AuthContext)` reads the **current value** from the nearest `<AuthContext.Provider>` ancestor
+- The `if (!context)` check catches a common bug: if you accidentally use `useAuth()` in a component that's NOT wrapped in `<AuthProvider>`, you'll get a clear error message instead of mysterious `undefined` values
+- Now any component can do: `const { user, isAuthenticated, isLoading, logout } = useAuth();`
+
+### ✅ Verify
+
+After saving, your app should still work normally — no errors. You haven't used the hook anywhere yet.
+
+> [!WARNING]
+> **Common mistake:** Don't export `AuthContext` itself. The context should stay private. Only the `useAuth` hook and `AuthProvider` should be public exports. This is a pattern called **encapsulation**.
+
+---
+
+## Step 2: Protect the `/analyze` Route
+
+### 📁 File: [analyze/page.tsx](file:///e:/Web%20Development/ai_powered_resume_analyzer/frontend/src/app/analyze/page.tsx)
+
+### The concept: Route Guard
+
+A route guard is a pattern where a page checks "is the user allowed here?" before rendering. The logic is:
+
+```
+Component mounts
+  → useAuth() gives { isAuthenticated, isLoading }
+  → If isLoading is true → show a spinner (auth check still in progress)
+  → If isAuthenticated is false → redirect to /login
+  → If isAuthenticated is true → render the actual page
+```
+
+### What to do
+
+**2a.** Update your imports. You'll need:
+- `useEffect` from React (to run the redirect logic after mount)
+- `useRouter` from `next/navigation` (**not** `next/router` — that's the old Pages Router!)
+- `useAuth` from your auth context
+- `Loader2` from `lucide-react` (for the loading spinner)
+
+**2b.** Inside your component, get the auth state and router:
+
+```tsx
+const { isAuthenticated, isLoading } = useAuth();
+const router = useRouter();
+```
+
+**2c.** Add a `useEffect` that redirects when not authenticated:
+
+```tsx
+useEffect(() => {
+  if (!isLoading && !isAuthenticated) {
+    router.push("/login");
+  }
+}, [isLoading, isAuthenticated, router]);
+```
+
+**Why `!isLoading &&` first?** Because on initial load, `isLoading` is `true` while the `/me` API call is in flight. You don't want to redirect during that time — the user might actually be logged in, you just don't know yet.
+
+**2d.** Add early returns before your main JSX:
+
+```tsx
+// Show spinner while auth is being checked
+if (isLoading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+    </div>
+  );
+}
+
+// Don't flash the protected page while redirect is happening
+if (!isAuthenticated) {
+  return null;
+}
+
+// If we get here, user IS authenticated — show the page
+return (
+  <div className="min-h-screen relative z-10">
+    <ResumePage />
+  </div>
+);
+```
+
+### ✅ Verify
+
+1. **Log out** (clear cookies/session) → visit `/analyze` → you should be redirected to `/login`
+2. **Log in** → visit `/analyze` → you should see the Resume Analyzer page normally
+
+> [!WARNING]
+> **Common mistakes to avoid:**
+> - ❌ `import { useRouter } from "next/router"` — This is the **Pages Router** import. Use `"next/navigation"` for App Router.
+> - ❌ `import { checkAuth } from "@/context/authContext"` — `checkAuth` is a **private function** inside `AuthProvider`. It's not exported. Use `useAuth()` to read the **results** of `checkAuth`.
+> - ❌ Forgetting the `isLoading` check — Without it, the page will briefly redirect even logged-in users because `isAuthenticated` starts as `false` before the API call completes.
+
+---
+
+## Step 3: Conditional Navbar (Profile vs Login)
+
+### 📁 File: [navbar.tsx](file:///e:/Web%20Development/ai_powered_resume_analyzer/frontend/src/components/navbar/navbar.tsx)
+
+### The concept: Conditional Rendering
+
+In React, you can render different JSX based on a condition using a **ternary expression**:
+
+```tsx
+{condition ? <ShowThis /> : <ShowThat />}
+```
+
+### What to do
+
+**3a.** Add imports at the top:
+
+```tsx
+import { useAuth } from "@/context/authContext";
+import { LogOut } from "lucide-react";  // add LogOut to your existing lucide import
+```
+
+**3b.** Inside the `Navbar` function, get the auth state:
+
+```tsx
+const { user, isAuthenticated, logout } = useAuth();
+```
+
+Also add a new state for the profile dropdown:
+
+```tsx
+const [profileOpen, setProfileOpen] = useState(false);
+```
+
+**3c.** Find the Login button in the **Desktop Links** section (around line 32-34). Replace it with conditional rendering:
+
+```tsx
+{isAuthenticated ? (
+  // ✅ LOGGED IN: Show profile avatar + dropdown
+  <div className="relative">
+    <button
+      onClick={() => setProfileOpen(!profileOpen)}
+      className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+    >
+      <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+        {user?.name?.charAt(0).toUpperCase() || "U"}
+      </div>
+      <span className="text-sm font-medium">
+        {user?.name || "User"}
+      </span>
+    </button>
+
+    {/* Dropdown menu */}
+    {profileOpen && (
+      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2">
+        <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+          <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{user?.email}</p>
+        </div>
+        <button
+          onClick={logout}
+          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2 cursor-pointer"
+        >
+          <LogOut className="w-4 h-4" />
+          Logout
+        </button>
+      </div>
+    )}
+  </div>
+) : (
+  // ❌ NOT LOGGED IN: Show login button (keep your existing button)
+  <button className="cursor-pointer text-white bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+    <Link href="/login" className=" transition-colors">Login</Link>
+  </button>
+)}
+```
+
+**3d.** Do the same for the **Mobile Menu** section (around line 86-88). Replace the mobile Login button with:
+
+```tsx
+{isAuthenticated ? (
+  <div className="flex items-center gap-3 py-2">
+    <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+      {user?.name?.charAt(0).toUpperCase() || "U"}
+    </div>
+    <div>
+      <p className="text-sm font-medium">{user?.name}</p>
+      <p className="text-xs text-gray-400">{user?.email}</p>
+    </div>
+    <button
+      onClick={logout}
+      className="ml-auto text-red-400 hover:text-red-300 cursor-pointer"
+    >
+      <LogOut className="w-5 h-5" />
+    </button>
+  </div>
+) : (
+  <button className="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition-colors w-fit">
+    <Link href="/login">Login</Link>
+  </button>
+)}
+```
+
+### How the avatar works
+
+```tsx
+{user?.name?.charAt(0).toUpperCase() || "U"}
+```
+
+- `user?.name` — safely access name (returns `undefined` if user is null)
+- `.charAt(0)` — get the first letter
+- `.toUpperCase()` — capitalize it
+- `|| "U"` — fallback to "U" if name is missing
+
+### ✅ Verify
+
+1. **Not logged in** → Navbar shows the blue "Login" button
+2. **Logged in** → Navbar shows avatar circle with your first initial + your name
+3. **Click the avatar** → Dropdown appears with name, email, and logout button
+4. **Click Logout** → You're logged out and the Login button reappears
+
+---
+
+## Recap: What You Built
+
+| Concept | What you did |
+|---------|-------------|
+| **Custom Hook** | Created `useAuth()` to expose auth state from context |
+| **Route Guard** | Protected `/analyze` with `useEffect` + redirect |
+| **Loading State** | Showed spinner while auth check is in flight |
+| **Conditional Rendering** | Used ternary `{isAuthenticated ? <A/> : <B/>}` in navbar |
+| **Encapsulation** | Kept `AuthContext` and `checkAuth` private, exposed only `useAuth` |
+
+---
+
+## Bonus: Making it Reusable
+
+Once you've done steps 1-3 and they're working, try creating a `ProtectedRoute` component in `src/components/ProtectedRoute.tsx`. It should:
+
+1. Accept `children` as a prop
+2. Use `useAuth()` to check auth
+3. Handle the loading/redirect/render logic (same as what you wrote in `analyze/page.tsx`)
+4. Return `{children}` when authenticated
+
+Then you can protect **any** page like this:
+
+```tsx
+<ProtectedRoute>
+  <ResumePage />
+</ProtectedRoute>
+```
+
+This avoids repeating the guard logic in every protected page. Try it after the main steps are working! 🚀

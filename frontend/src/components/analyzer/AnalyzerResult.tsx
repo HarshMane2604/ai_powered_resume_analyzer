@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { ScoreCard } from "./ScoreCard";
 import { FeedBackSection } from "./FeedBackSection";

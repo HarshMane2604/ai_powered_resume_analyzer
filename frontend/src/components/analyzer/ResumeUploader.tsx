@@ -1,11 +1,22 @@
-'use client';
+"use client";
 import { useState, useRef } from "react";
-import { Upload, FileText, Loader2, Sparkles, CheckCircle2, Target, Zap } from "lucide-react";
+import {
+  Upload,
+  FileText,
+  Loader2,
+  Sparkles,
+  CheckCircle2,
+  Target,
+  Zap,
+} from "lucide-react";
 import { analyzeResume } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-import { analysisSuccess, analysisFailure, startAnalysis } from "@/redux/sclices/resumeSlice";
-
+import {
+  analysisSuccess,
+  analysisFailure,
+  startAnalysis,
+} from "@/redux/sclices/resumeSlice";
 
 interface ResumeUploadProps {
   onAnalyze?: (file: File) => void;
@@ -21,9 +32,7 @@ export function ResumeUploader({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useAppDispatch();
-  const {loading, error} = useAppSelector(
-    (state: RootState) => state.resume
-  )
+  const { loading, error } = useAppSelector((state: RootState) => state.resume);
   const resumeData = useAppSelector((state: RootState) => state.resume.data);
 
   const handleDrag = (e: React.DragEvent) => {
@@ -45,7 +54,8 @@ export function ResumeUploader({
       const file = e.dataTransfer.files[0];
       if (
         file.type === "application/pdf" ||
-        file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         file.type === "text/plain"
       ) {
         setSelectedFile(file);
@@ -62,35 +72,36 @@ export function ResumeUploader({
   const handleAnalyzeClick = async () => {
     if (selectedFile) {
       dispatch(startAnalysis()); // Dispatch start action
-      
+
       try {
         const result = await analyzeResume(selectedFile);
         dispatch(analysisSuccess(result)); // Dispatch success with data
         onAnalyze?.(selectedFile);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to analyze resume';
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to analyze resume";
         dispatch(analysisFailure(errorMessage));
-        console.error('Analysis error:', err);
-      } 
+        console.error("Analysis error:", err);
+      }
     }
   };
-   console.log('Resume data from Redux:', resumeData);
+  console.log("Resume data from Redux:", resumeData);
 
   return (
     <div className="w-full max-w-4xl mx-auto pt-32 pb-24 px-4 sm:px-6 lg:px-8">
-      
       {/* Header Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">
           Analyze Your Resume
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Upload your resume to get instant, actionable feedback powered by advanced AI. Ensure you match industry standards and land more interviews.
+          Upload your resume to get instant, actionable feedback powered by
+          advanced AI. Ensure you match industry standards and land more
+          interviews.
         </p>
       </div>
 
       <div className="bg-white dark:bg-[#09090b] rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 sm:p-10">
-        
         {/* Upload Area */}
         <div
           className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer ${
@@ -138,7 +149,8 @@ export function ResumeUploader({
                     {selectedFile.name}
                   </p>
                   <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2 font-medium">
-                    Ready to analyze • {(selectedFile.size / 1024).toFixed(2)} KB
+                    Ready to analyze • {(selectedFile.size / 1024).toFixed(2)}{" "}
+                    KB
                   </p>
                 </div>
               </>
@@ -180,7 +192,9 @@ export function ResumeUploader({
         {error && (
           <div className="mt-6 p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-lg flex items-start gap-3">
             <div className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
-            <p className="text-red-800 dark:text-red-400 font-medium text-sm">{error}</p>
+            <p className="text-red-800 dark:text-red-400 font-medium text-sm">
+              {error}
+            </p>
           </div>
         )}
 
@@ -195,18 +209,27 @@ export function ResumeUploader({
                 <Target className="w-4 h-4 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">ATS Match Score</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">See how well your resume parses in standard Applicant Tracking Systems.</p>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  ATS Match Score
+                </h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                  See how well your resume parses in standard Applicant Tracking
+                  Systems.
+                </p>
               </div>
             </div>
-            
+
             <div className="flex gap-4">
               <div className="shrink-0 mt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-md">
                 <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Keyword Analysis</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Identify critical industry keywords you might be missing.</p>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  Keyword Analysis
+                </h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                  Identify critical industry keywords you might be missing.
+                </p>
               </div>
             </div>
 
@@ -215,8 +238,12 @@ export function ResumeUploader({
                 <Zap className="w-4 h-4 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Strengths & Weaknesses</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Detailed breakdown of what makes you stand out to recruiters.</p>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  Strengths & Weaknesses
+                </h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                  Detailed breakdown of what makes you stand out to recruiters.
+                </p>
               </div>
             </div>
 
@@ -225,17 +252,20 @@ export function ResumeUploader({
                 <Sparkles className="w-4 h-4 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Actionable Suggestions</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Direct advice and examples on how to improve your bullet points.</p>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  Actionable Suggestions
+                </h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                  Direct advice and examples on how to improve your bullet
+                  points.
+                </p>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
 }
 
 export default ResumeUploader;
-
