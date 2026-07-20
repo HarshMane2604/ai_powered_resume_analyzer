@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/authContext";
 import Link from "next/link";
 import { Menu, X, LogOut } from "lucide-react";
@@ -10,6 +10,22 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl ">
@@ -25,18 +41,18 @@ export default function Navbar() {
               HireSight AI
             </div>
           </Link>
-          <Link href="/" className="hover:text-blue-400 transition-colors">
+          <Link href="/" className="hover:text-blue-600 transition-colors">
             Home
           </Link>
           <Link
             href="/features"
-            className="hover:text-blue-400 transition-colors"
+            className="hover:text-blue-600 transition-colors"
           >
             Features
           </Link>
           <Link
             href="/pricing"
-            className="hover:text-blue-400 transition-colors"
+            className="hover:text-blue-600 transition-colors"
           >
             Pricing
           </Link>
@@ -45,7 +61,7 @@ export default function Navbar() {
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8 text-gray-800 dark:text-white font-medium">
           {isAuthenticated ? (
-            <div className="relative">
+            <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
                 className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
@@ -61,7 +77,7 @@ export default function Navbar() {
                     <p className="text-sm font-medium text-gray-900 dark:text-white">
                       {user?.name}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-700">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       {user?.email}
                     </p>
                   </div>
@@ -70,7 +86,7 @@ export default function Navbar() {
                       logout();
                       setProfileOpen(false);
                     }}
-                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                    className="w-full cursor-pointer flex items-center gap-3 px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
                     <LogOut size={18} />
                     Logout

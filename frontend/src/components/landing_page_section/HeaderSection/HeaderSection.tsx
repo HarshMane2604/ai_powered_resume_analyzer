@@ -53,13 +53,15 @@ const HeaderSection = () => {
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
         >
           <Link href="/analyze" className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto rounded-lg bg-gray-900 dark:bg-white px-8 py-3.5 text-sm font-semibold text-white dark:text-gray-900 shadow-md hover:bg-gray-800 dark:hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition-all duration-200">
+            <button className="w-full cursor-pointer sm:w-auto rounded-lg bg-gray-900 dark:bg-white px-8 py-3.5 text-sm font-semibold text-white dark:text-gray-900 shadow-md hover:bg-gray-800 dark:hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition-all duration-200">
               Analyze Resume Now
             </button>
           </Link>
-          <button className="w-full sm:w-auto rounded-lg bg-white dark:bg-[#0a0a0a] px-8 py-3.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-200">
-            View Sample Report
-          </button>
+          <Link href="/sample-report" className="w-full sm:w-auto">
+            <button className="w-full cursor-pointer sm:w-auto rounded-lg bg-white dark:bg-[#0a0a0a] px-8 py-3.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-200">
+              View Sample Report
+            </button>
+          </Link>
         </motion.div>
       </div>
     </div>
