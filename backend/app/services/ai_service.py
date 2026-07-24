@@ -10,22 +10,26 @@ model = genai.GenerativeModel(
     generation_config={
         "temperature": 0.2,
         "top_p": 0.9,
-        "max_output_tokens": 1024,
+        "max_output_tokens": 8192,
     }
 )
 
 
-def analyze_resume_with_ai(resume_text:str) -> dict:
+def analyze_resume_with_ai(resume_text:str, job_description:str = None) -> dict:
     prompt = f"""
         Return ONLY valid JSON.
         No markdown.
         No explanations.
         No extra text.
+        If a job description is provided, compare it against the resume to find missing keywords and calculate an ATS match score.
 
         Schema:
         {{
         "ats_score": number,
+        "jd_match_score": number,
         "overall_score": number,
+        "missing_keywords": string[],
+        "rewording_suggestions": string[],
         "skills": string[],
         "strengths": string[],
         "weaknesses": string[],
@@ -35,18 +39,22 @@ def analyze_resume_with_ai(resume_text:str) -> dict:
             "Content": number,
             "Formatting": number,
             "keywords": number,
-            "work_experience": number,
+            "work_experience": number
         }}
         }}
         Resume:
         {resume_text}
+        Job Description (optional):
+        {job_description if job_description else 'None provided. Please evaluate the resume generally.'}
     """
     try:
         response = model.generate_content(prompt)
         raw_text = response.text.strip()
+        print(f"\n\nRAW TEXT: {raw_text}\n\n")
 
         if raw_text.startswith("```"):
-            raw_text = raw_text.strip("```json").strip("```")
+            raw_text = raw_text.replace("```json", "").replace("```", "").strip()
+
         
         return json.loads(raw_text)
     except json.JSONDecodeError:

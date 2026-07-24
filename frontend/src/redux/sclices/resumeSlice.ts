@@ -3,6 +3,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface ResumeAnalysis{
     ats_score: number;
     overall_score: number;
+    jd_match_score?: number;
+    missing_keywords?: string[];
+    rewording_suggestions?: string[];
     skills: string[];
     strengths: string[];
     weaknesses: string[];

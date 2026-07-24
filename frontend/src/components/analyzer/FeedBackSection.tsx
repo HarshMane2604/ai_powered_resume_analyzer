@@ -46,7 +46,7 @@ export const FeedBackSection = ({
           {title}
         </h3>
       </div>
-      <ul className="space-y-3 flex-1">
+      <ul className="space-y-3 flex-1 overflow-y-auto min-h-0 pr-2 custom-scrollbar">
         {items.map((item, index) => (
           <li
             key={index}

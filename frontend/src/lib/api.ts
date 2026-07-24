@@ -10,10 +10,12 @@ const apiClient = axios.create({
   },
 });
 
-export const analyzeResume = async (file: File) => {
+export const analyzeResume = async (file: File, job_description?: string) => {
   const formData = new FormData();
   formData.append('file', file);
-
+  if (job_description){
+    formData.append("job_description", job_description)
+  }
   try {
     const response = await apiClient.post('/resume/analyze', formData, {
       headers: {

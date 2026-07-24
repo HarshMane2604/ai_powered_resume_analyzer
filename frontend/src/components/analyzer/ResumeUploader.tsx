@@ -27,6 +27,7 @@ export function ResumeUploader({
   onAnalyze,
   isAnalyzing: isAnalyzingProp,
 }: ResumeUploadProps) {
+  const [jobDescription, setJobDescription] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -74,7 +75,7 @@ export function ResumeUploader({
       dispatch(startAnalysis()); // Dispatch start action
 
       try {
-        const result = await analyzeResume(selectedFile);
+        const result = await analyzeResume(selectedFile, jobDescription);
         dispatch(analysisSuccess(result)); // Dispatch success with data
         onAnalyze?.(selectedFile);
       } catch (err) {
@@ -156,6 +157,27 @@ export function ResumeUploader({
               </>
             )}
           </div>
+        </div>
+
+        {/* job description area */}
+        <div className="mt-8">
+          <label
+            htmlFor="jobDescription"
+            className="text-sm font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2 mb-3"
+          >
+            <Target className="w-4 h-4 text-blue-500" />
+            Target Job Description{" "}
+            <span className="text-gray-400 dark:text-gray-500 font-normal">
+              (Optional)
+            </span>
+          </label>
+          <textarea
+            id="jobDescription"
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
+            placeholder="Paste the job description here to receive a personalized ATS Match Score and missing keywords analysis..."
+            className="w-full h-32 p-4 border border-gray-200 dark:border-gray-800 rounded-xl bg-transparent dark:bg-transparent hover:bg-gray-50 dark:hover:bg-[#18181b] focus:bg-gray-50 dark:focus:bg-[#18181b] text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none shadow-inner text-sm leading-relaxed custom-scrollbar"
+          />
         </div>
 
         {/* Analyze Button */}

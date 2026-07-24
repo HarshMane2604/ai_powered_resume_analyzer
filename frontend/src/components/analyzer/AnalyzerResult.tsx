@@ -17,12 +17,14 @@ export const AnalyzerResult = () => {
 
   if (!data) return null;
 
+  const hasJd = !!data.jd_match_score;
+
   return (
     <div className="w-full max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8">
       {/* ===== BENTO GRID ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[minmax(180px,auto)]">
-        {/* ── Hero Tile (wide, row 1, col 1-2) ── */}
-        <div className="md:col-span-2 lg:col-span-2 lg:row-span-1 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-900 rounded-2xl p-8 flex flex-col justify-center text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 auto-rows-[minmax(180px,auto)]">
+        {/* ── Hero Tile (Row 1) ── */}
+        <div className="md:col-span-2 lg:col-span-6 lg:row-span-1 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-900 rounded-2xl p-8 flex flex-col justify-center text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1">
           <div className="flex items-center gap-3 mb-3">
             <Sparkles className="w-6 h-6 opacity-80" />
             <span className="text-sm font-medium uppercase tracking-widest opacity-70">
@@ -38,8 +40,8 @@ export const AnalyzerResult = () => {
           </p>
         </div>
 
-        {/* ── Overall Score (col 3) ── */}
-        <div className="lg:col-span-1">
+        {/* ── Overall Score (Row 1) ── */}
+        <div className={hasJd ? "lg:col-span-2" : "lg:col-span-3"}>
           <ScoreCard
             title="Overall Score"
             score={data.overall_score}
@@ -48,8 +50,8 @@ export const AnalyzerResult = () => {
           />
         </div>
 
-        {/* ── ATS Score (col 4) ── */}
-        <div className="lg:col-span-1">
+        {/* ── ATS Score (Row 1) ── */}
+        <div className={hasJd ? "lg:col-span-2" : "lg:col-span-3"}>
           <ScoreCard
             title="ATS Match"
             score={data.ats_score}
@@ -58,8 +60,20 @@ export const AnalyzerResult = () => {
           />
         </div>
 
-        {/* ── Section Breakdown (row 2, col 1-3, tall) ── */}
-        <div className="md:col-span-2 lg:col-span-3 bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 lg:p-8 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 hover:-translate-y-1">
+        {/* ── Jd Matching Score (Row 1) ── */}
+        {hasJd && (
+          <div className="lg:col-span-2">
+            <ScoreCard
+              title="Job Match"
+              score={data.jd_match_score!}
+              description="Match against job description"
+              color="blue"
+            />
+          </div>
+        )}
+
+        {/* ── Section Breakdown (Row 2) ── */}
+        <div className="md:col-span-2 lg:col-span-8 bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 lg:p-8 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 hover:-translate-y-1">
           <div className="flex items-center gap-2 mb-8">
             <BarChart3 className="w-5 h-5 text-blue-500" />
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
@@ -88,25 +102,27 @@ export const AnalyzerResult = () => {
           </div>
         </div>
 
-        {/* ── Strengths (row 2, col 4, tall — spans 2 rows) ── */}
-        <div className="lg:col-span-1 lg:row-span-2">
-          <FeedBackSection
-            title="Strengths"
-            items={data.strengths}
-            icon={<ThumbsUp className="w-5 h-5" />}
-            color="green"
-          />
+        {/* ── Strengths (Row 2 & 3) ── */}
+        <div className="lg:col-span-4 lg:row-span-2 relative min-h-[400px] lg:min-h-0">
+          <div className="lg:absolute lg:inset-0 h-full">
+            <FeedBackSection
+              title="Strengths"
+              items={data.strengths}
+              icon={<ThumbsUp className="w-5 h-5" />}
+              color="green"
+            />
+          </div>
         </div>
 
-        {/* ── Detected Skills (row 3, col 1-2) ── */}
-        <div className="md:col-span-1 lg:col-span-2 bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 hover:-translate-y-1">
+        {/* ── Detected Skills (Row 3) ── */}
+        <div className="md:col-span-1 lg:col-span-4 bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 hover:-translate-y-1">
           <div className="flex items-center gap-2 mb-5">
             <CheckCircle className="w-5 h-5 text-green-500" />
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
               Detected Skills
             </h3>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-2">
             {data.skills.length > 0 &&
               data.skills.map((skill: string, index: number) => (
                 <span
@@ -119,15 +135,37 @@ export const AnalyzerResult = () => {
           </div>
         </div>
 
-        {/* ── Recommended Keywords (row 3, col 3) ── */}
-        <div className="lg:col-span-1 bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 hover:-translate-y-1">
+        {/* ── Missing JD Keywords (Row 3) ── */}
+        {hasJd && data.missing_keywords && data.missing_keywords.length > 0 && (
+          <div className="lg:col-span-4 bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <div className="flex items-center gap-2 mb-5">
+              <AlertCircle className="w-5 h-5 text-red-500" />
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+                Missing from JD
+              </h3>
+            </div>
+            <div className="flex flex-wrap gap-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-2">
+              {data.missing_keywords.map((keyword: string, index: number) => (
+                <span
+                  key={index}
+                  className="px-3 py-1.5 bg-red-50 dark:bg-red-900/15 text-red-700 dark:text-red-400 rounded-lg text-xs font-medium border border-red-200/60 dark:border-red-800/40"
+                >
+                  {keyword}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── Recommended Keywords (Row 3 or 4) ── */}
+        <div className="lg:col-span-4 bg-white dark:bg-[#18181b] rounded-2xl border border-gray-200 dark:border-gray-800/60 p-6 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 hover:-translate-y-1">
           <div className="flex items-center gap-2 mb-5">
             <AlertCircle className="w-5 h-5 text-orange-500" />
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
               Add These Keywords
             </h3>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-2">
             {(data.recommended_skills || []).map(
               (keyword: string, index: number) => (
                 <span
@@ -141,8 +179,14 @@ export const AnalyzerResult = () => {
           </div>
         </div>
 
-        {/* ── Weaknesses (row 4, col 1-2) ── */}
-        <div className="md:col-span-1 lg:col-span-2">
+        {/* ── Weaknesses (Row 4) ── */}
+        <div
+          className={
+            hasJd
+              ? "md:col-span-1 lg:col-span-4 h-[350px]"
+              : "md:col-span-1 lg:col-span-6 h-[350px]"
+          }
+        >
           <FeedBackSection
             title="Weaknesses"
             items={data.weaknesses}
@@ -151,8 +195,14 @@ export const AnalyzerResult = () => {
           />
         </div>
 
-        {/* ── Suggestions (row 4, col 3-4) ── */}
-        <div className="md:col-span-1 lg:col-span-2">
+        {/* ── Suggestions (Row 4) ── */}
+        <div
+          className={
+            hasJd
+              ? "md:col-span-1 lg:col-span-4 h-[350px]"
+              : "md:col-span-1 lg:col-span-6 h-[350px]"
+          }
+        >
           <FeedBackSection
             title="Suggestions"
             items={data.suggestions}
