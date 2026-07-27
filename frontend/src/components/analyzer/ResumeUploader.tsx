@@ -89,7 +89,7 @@ export function ResumeUploader({
   console.log("Resume data from Redux:", resumeData);
 
   return (
-    <div className="w-full max-w-4xl mx-auto pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="w-full max-w-4xl mx-auto pt-8 pb-24 px-4 sm:px-6 lg:px-8">
       {/* Header Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">

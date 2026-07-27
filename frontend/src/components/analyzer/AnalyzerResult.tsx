@@ -20,11 +20,11 @@ export const AnalyzerResult = () => {
   const hasJd = !!data.jd_match_score;
 
   return (
-    <div className="w-full max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="w-full max-w-7xl mx-auto pt-8 pb-24 px-4 sm:px-6 lg:px-8">
       {/* ===== BENTO GRID ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 auto-rows-[minmax(180px,auto)]">
         {/* ── Hero Tile (Row 1) ── */}
-        <div className="md:col-span-2 lg:col-span-6 lg:row-span-1 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-900 rounded-2xl p-8 flex flex-col justify-center text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1">
+        <div className={`md:col-span-2 ${hasJd ? "lg:col-span-6" : "lg:col-span-8"} lg:row-span-1 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-900 rounded-2xl p-8 flex flex-col justify-center text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1`}>
           <div className="flex items-center gap-3 mb-3">
             <Sparkles className="w-6 h-6 opacity-80" />
             <span className="text-sm font-medium uppercase tracking-widest opacity-70">
@@ -41,7 +41,7 @@ export const AnalyzerResult = () => {
         </div>
 
         {/* ── Overall Score (Row 1) ── */}
-        <div className={hasJd ? "lg:col-span-2" : "lg:col-span-3"}>
+        <div className={hasJd ? "lg:col-span-2" : "lg:col-span-4"}>
           <ScoreCard
             title="Overall Score"
             score={data.overall_score}
@@ -51,14 +51,16 @@ export const AnalyzerResult = () => {
         </div>
 
         {/* ── ATS Score (Row 1) ── */}
-        <div className={hasJd ? "lg:col-span-2" : "lg:col-span-3"}>
-          <ScoreCard
-            title="ATS Match"
-            score={data.ats_score}
-            description="ATS parsability"
-            color="purple"
-          />
-        </div>
+        {hasJd && (
+          <div className={hasJd ? "lg:col-span-2" : "lg:col-span-3"}>
+            <ScoreCard
+              title="ATS Match"
+              score={data.ats_score}
+              description="ATS parsability"
+              color="purple"
+            />
+          </div>
+        )}
 
         {/* ── Jd Matching Score (Row 1) ── */}
         {hasJd && (
