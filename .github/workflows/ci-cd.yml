@@ -65,19 +65,19 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build and Push Backend Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./backend
           push: true
           tags: ${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:backend-latest
-          cache-from: type=register,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:backend-buildcache
-          cache-to: type=register,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:backend-buildcache,mode=max
+          cache-from: type=registry,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:backend-buildcache
+          cache-to: type=registry,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:backend-buildcache,mode=max
 
       - name: Build and Push Frontend Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./frontend
           push: true
           tags: ${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:frontend-latest
-          cache-from: type=register,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:frontend-buildcache
-          cache-to: type=register,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:frontend-buildcache,mode=max
+          cache-from: type=registry,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:frontend-buildcache
+          cache-to: type=registry,ref=${{secrets.DOCKER_USERNAME}}/ai-resume-analyzer:frontend-buildcache,mode=max
