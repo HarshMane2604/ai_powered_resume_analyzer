@@ -58,8 +58,8 @@ async def login(user_data: UserLogin, response: Response, db: AsyncSession = Dep
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=True,  # Set to True in production with HTTPS
-        samesite="lax",
+        secure=True,  # Required for SameSite="none"
+        samesite="none", # Required for cross-domain requests (Vercel -> Render)
         max_age=60 * 15
     )
 
@@ -67,8 +67,8 @@ async def login(user_data: UserLogin, response: Response, db: AsyncSession = Dep
         key="refresh_token",
         value=refresh_token,
         httponly=True,
-        secure=True,  # Set to True in production with HTTPS
-        samesite="lax",
+        secure=True,  # Required for SameSite="none"
+        samesite="none", # Required for cross-domain requests (Vercel -> Render)
         max_age=60 * 60 * 24 * 7
     )
 
