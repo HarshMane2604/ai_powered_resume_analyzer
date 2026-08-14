@@ -13,13 +13,13 @@ def extract_text(file_path: Path) -> str:
 
     if suffix == ".pdf":
         text = ""
-        doc = fitz.open(file_path)
+        doc = fitz.open(str(file_path))
         for page in doc:
             text += page.get_text()
         return text
 
     if suffix in [".doc", ".docx"]:
-        doc = docx.Document(file_path)
+        doc = docx.Document(str(file_path))
         return "\n".join(p.text for p in doc.paragraphs)
 
     raise ValueError(f"Unsupported file format: {suffix}")

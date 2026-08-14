@@ -6,6 +6,12 @@ from typing import Optional
 def analyze_resume(file, job_description: Optional[str] = None):
     validate_file(file)
     temp_path = save_temp_file(file)
-    text = extract_text(temp_path)
-    ai_result = analyze_resume_with_ai(text, job_description)
-    return ai_result
+    
+    try:
+        text = extract_text(temp_path)
+        ai_result = analyze_resume_with_ai(text, job_description)
+        return ai_result
+    finally:
+        # Delete the file immediately so it doesn't build up on Render's disk
+        if temp_path.exists():
+            temp_path.unlink()

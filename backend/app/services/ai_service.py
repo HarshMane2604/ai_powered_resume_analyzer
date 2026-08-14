@@ -6,7 +6,7 @@ from app.core.config import GEMINI_API_KEY
 genai.configure(api_key=GEMINI_API_KEY)
 
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash-lite",
+    model_name="gemini-2.5-flash",
     generation_config={
         "temperature": 0.2,
         "top_p": 0.9,
@@ -64,6 +64,8 @@ def analyze_resume_with_ai(resume_text:str, job_description:str = None) -> dict:
         )
     
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
             status_code=500,
             detail=f"AI Resume Analysis Failed: {str(e)}"

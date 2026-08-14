@@ -16,6 +16,8 @@ env/
 .env
 .env.*
 !.env.example
+.env_development
+.env_production
 
 # Database files (Common in FastAPI local development)
 *.db
@@ -44,3 +46,4 @@ Thumbs.db
 
 # folder for uploaded resumes
 /temp_uploads
+
