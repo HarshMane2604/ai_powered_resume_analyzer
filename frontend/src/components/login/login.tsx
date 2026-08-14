@@ -32,18 +32,19 @@ export function SignupFormDemo() {
     setMessage("");
 
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const endpoint = isLogin
-        ? "http://localhost:8000/auth/login"
-        : "http://localhost:8000/auth/signup";
+        ? `${apiUrl}/auth/login`
+        : `${apiUrl}/auth/signup`;
 
       const body = isLogin
         ? JSON.stringify({ email, password })
         : JSON.stringify({
-            name: `${firstname} ${lastname}`.trim(),
-            email: email,
-            password: password,
-            role: "user", //default role
-          });
+          name: `${firstname} ${lastname}`.trim(),
+          email: email,
+          password: password,
+          role: "user", //default role
+        });
 
       const response = await fetch(endpoint, {
         method: "POST",
