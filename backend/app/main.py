@@ -7,7 +7,8 @@ app = FastAPI(title="AI Resume Analyzer API")
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],  # Frontend URL
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],  # Keep local development active
+    allow_origin_regex=r"https://.*\.vercel\.app", # Allow production frontend on Vercel
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
